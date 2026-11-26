@@ -1,25 +1,28 @@
 import {Blockly} from 'ngx-blockly';
 
-export class CustomMutator extends Blockly.Mutator {
+/**
+ * Blockly v10 起把 Mutator 重构为图标（MutatorIcon）。
+ * 自定义 mutator 现在继承 Blockly.icons.MutatorIcon，
+ * 并把 mini workspace 中可用的 block 类型传给基类。
+ */
+export class CustomMutator extends Blockly.icons.MutatorIcon {
 
-  constructor(block: any) {
-    super(block);
+  constructor(block: Blockly.BlockSvg) {
+    super(['math_number'], block);
   }
 
-  drawIcon_(group: SVGElement) {
-    group.setAttribute('width', '40');
-    // Necessary to keep symbols under control
-    const g = Blockly.utils.dom.createSvgElement('g', {}, group) as SVGElement;
-    Blockly.utils.dom.createSvgElement('path', {
-      'transform': 'scale(0.5) translate(0,4)',
-      'fill': '#ffffff',
-      'd': 'M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z'
-    }, g);
+  /**
+   * 自定义图标尺寸（40x40），替代 v9 中覆写 drawIcon_ 的做法。
+   */
+  getSize(): Blockly.utils.Size {
+    return new Blockly.utils.Size(40, 40);
   }
 
-  setVisible(visible: boolean) {
-    if (visible) {
-      alert('plus button was clicked');
-    }
+  /**
+   * 点击图标时给出提示（v9 中通过 setVisible 实现）。
+   */
+  onClick(): void {
+    alert('plus button was clicked');
+    super.onClick();
   }
 }

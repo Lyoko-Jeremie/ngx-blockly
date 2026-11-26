@@ -63,19 +63,19 @@ export class NgxBlocklyComponent implements OnInit, AfterViewInit, OnChanges, On
             );
           }
         };
-        pythonGenerator[customBlock.type] = function (b: any) {
+        (pythonGenerator as any)[customBlock.type] = function (b: any) {
           return b.blockInstance.toPythonCode(b);
         };
-        dartGenerator[customBlock.type] = function (b: any) {
+        (dartGenerator as any)[customBlock.type] = function (b: any) {
           return b.blockInstance.toDartCode(b);
         };
-        javascriptGenerator[customBlock.type] = function (b: any) {
+        (javascriptGenerator as any)[customBlock.type] = function (b: any) {
           return b.blockInstance.toJavaScriptCode(b);
         };
-        luaGenerator[customBlock.type] = function (b: any) {
+        (luaGenerator as any)[customBlock.type] = function (b: any) {
           return b.blockInstance.toLuaCode(b);
         };
-        phpGenerator[customBlock.type] = function (b: any) {
+        (phpGenerator as any)[customBlock.type] = function (b: any) {
           return b.blockInstance.toPHPCode(b);
         };
         const blockMutator = customBlock.blockMutator;
@@ -207,9 +207,9 @@ export class NgxBlocklyComponent implements OnInit, AfterViewInit, OnChanges, On
    */
   public fromXml(xml: string) {
     this._finishedLoading = false;
-    Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.Xml.textToDom(xml), this.workspace);
+    Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.utils.xml.textToDom(xml), this.workspace);
     if (this._secondaryWorkspace) {
-      Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.Xml.textToDom(xml), this._secondaryWorkspace);
+      Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.utils.xml.textToDom(xml), this._secondaryWorkspace);
     }
   }
 
@@ -219,9 +219,9 @@ export class NgxBlocklyComponent implements OnInit, AfterViewInit, OnChanges, On
    * @param xml The XML DOM.
    */
   public appendFromXml(xml: string) {
-    Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom(xml), this.workspace);
+    Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom(xml), this.workspace);
     if (this._secondaryWorkspace) {
-      Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom(xml), this._secondaryWorkspace);
+      Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom(xml), this._secondaryWorkspace);
     }
   }
 
@@ -286,7 +286,7 @@ export class NgxBlocklyComponent implements OnInit, AfterViewInit, OnChanges, On
         config.readOnly = true;
         this._secondaryWorkspace = Blockly.inject(this.secondaryContainer.nativeElement, config);
       }
-      Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.Xml.textToDom(this.toXml()), this._secondaryWorkspace);
+      Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.utils.xml.textToDom(this.toXml()), this._secondaryWorkspace);
       Blockly.svgResize(this._secondaryWorkspace);
     } else {
       if (this._secondaryWorkspace) {

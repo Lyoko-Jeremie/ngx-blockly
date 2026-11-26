@@ -31,7 +31,7 @@ Blockly.CollapsibleToolboxCategory.prototype.parseContents_ = function (this: an
         this.flyoutItems_.push(flyoutItem);
         prevIsFlyoutItem = true;
       } else {
-        this.createToolboxItem_(itemDef);
+        this.createToolboxItem(itemDef);
         prevIsFlyoutItem = false;
       }
     }

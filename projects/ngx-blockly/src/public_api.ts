@@ -8,7 +8,7 @@ export {Blockly};
 // Locales
 import * as EN from 'blockly/msg/en';
 
-Blockly.setLocale(EN);
+Blockly.setLocale(EN as any);
 
 export * from './lib/ngx-blockly/ngx-blockly.component';
 export * from './lib/ngx-blockly/ngx-blockly.config';
