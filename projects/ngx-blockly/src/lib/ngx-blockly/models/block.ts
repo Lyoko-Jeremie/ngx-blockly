@@ -3,13 +3,13 @@ import {CustomBlock} from './custom-block';
 import {Node} from './node';
 
 
-export type Constructor = new (type: string, blockMutator?: BlockMutator, ...args: any[]) => CustomBlock;
+export type Constructor = new (type: string, blockMutator?: BlockMutator | null, ...args: any[]) => CustomBlock;
 
 export abstract class Block implements Node {
 
   public kind = 'BLOCK';
   private _type: string;
-  private _class: Constructor;
+  private _class!: Constructor;
   private _disabled = false;
 
   protected constructor(type: string) {
@@ -40,5 +40,5 @@ export abstract class Block implements Node {
     this._class = value;
   }
 
-  public abstract toXML();
+  public abstract toXML(): string;
 }

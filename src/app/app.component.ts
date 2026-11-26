@@ -24,7 +24,8 @@ import {ExampleBlock} from './blocks/example.block';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  standalone: false
 })
 export class AppComponent implements AfterViewInit {
 
@@ -71,7 +72,7 @@ export class AppComponent implements AfterViewInit {
 
   };
 
-  @ViewChild('blockly') blocklyComponent: NgxBlocklyComponent;
+  @ViewChild('blockly') blocklyComponent!: NgxBlocklyComponent;
 
   constructor() {
     const workspace = new Blockly.WorkspaceSvg(new Blockly.Options({}));

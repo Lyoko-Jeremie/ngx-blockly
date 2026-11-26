@@ -3,8 +3,8 @@ import {Block} from './block';
 export class XmlBlock extends Block {
 
   private _values: Value[] = [];
-  private _field: Field;
-  private _mutation: Mutation;
+  private _field?: Field;
+  private _mutation?: Mutation;
   private _shadow: boolean;
 
   constructor(type: string, shadow = false) {
@@ -20,19 +20,19 @@ export class XmlBlock extends Block {
     this._values = value;
   }
 
-  get field(): Field {
+  get field(): Field | undefined {
     return this._field;
   }
 
-  set field(value: Field) {
+  set field(value: Field | undefined) {
     this._field = value;
   }
 
-  get mutation(): Mutation {
+  get mutation(): Mutation | undefined {
     return this._mutation;
   }
 
-  set mutation(mutation: Mutation) {
+  set mutation(mutation: Mutation | undefined) {
     this._mutation = mutation;
   }
 

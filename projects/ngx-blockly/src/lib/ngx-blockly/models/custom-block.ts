@@ -4,8 +4,8 @@ import * as Blockly from 'blockly/core';
 
 export abstract class CustomBlock extends Block {
 
-  private _block: Blockly.Block;
-  private _blockMutator: BlockMutator;
+  private _block!: Blockly.Block;
+  private _blockMutator: BlockMutator | null;
   private _args: any[];
 
 
@@ -15,17 +15,15 @@ export abstract class CustomBlock extends Block {
     this._args = args;
   }
 
-  public init(block: Blockly.Block) {
+  public init(block: Blockly.Block): void {
     this._block = block;
     this.defineBlock();
-    this.block.setOnChange(function (event) {
-      this.blockInstance.onChange(event);
-    });
+    this._block.setOnChange((event) => this.onChange(event));
   }
 
-  public abstract defineBlock();
+  public abstract defineBlock(): void;
 
-  public onChange(changeEvent: Blockly.Events.AbstractEventJson) {
+  public onChange(changeEvent: Blockly.Events.Abstract): void {
     // nothing to do
   }
 
@@ -61,11 +59,11 @@ export abstract class CustomBlock extends Block {
     this._block = block;
   }
 
-  get blockMutator(): BlockMutator {
+  get blockMutator(): BlockMutator | null {
     return this._blockMutator;
   }
 
-  set blockMutator(mutator: BlockMutator) {
+  set blockMutator(mutator: BlockMutator | null) {
     this._blockMutator = mutator;
   }
 

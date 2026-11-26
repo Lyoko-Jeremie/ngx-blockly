@@ -12,23 +12,10 @@ import * as Blockly from 'blockly/core';
 export class NgxBlocklyModule {
 }
 
-// Still needed?
-// Blockly.ToolboxCategory.prototype.parseContents_ = function (categoryDef) {
-//     const contents = categoryDef['contents'];
-//     if (categoryDef['custom']) {
-//         this.flyoutItems_ = categoryDef['custom'];
-//     } else if (contents) {
-//         for (let i = 0, itemDef; (itemDef = contents[i]); i++) {
-//             const flyoutItem = (itemDef);
-//             this.flyoutItems_.push(flyoutItem);
-//         }
-//     }
-//     if (categoryDef['categoryclass']) {
-//         this.cssConfig_.row += ' ' + categoryDef['categoryclass'];
-//     }
-// };
-
-Blockly.CollapsibleToolboxCategory.prototype.parseContents_ = function (categoryDef) {
+// Blockly does not handle the CSS class of a category (categoryclass attribute)
+// and it does not add separators defined in a JSON toolbox to the flyout
+// when the previous item is a flyout item. So we override parseContents_.
+Blockly.CollapsibleToolboxCategory.prototype.parseContents_ = function (this: any, categoryDef: any): void {
   const contents = categoryDef['contents'];
   let prevIsFlyoutItem = true;
   if (categoryDef['custom']) {
@@ -53,4 +40,3 @@ Blockly.CollapsibleToolboxCategory.prototype.parseContents_ = function (category
     this.cssConfig_.row += ' ' + categoryDef['categoryclass'];
   }
 };
-

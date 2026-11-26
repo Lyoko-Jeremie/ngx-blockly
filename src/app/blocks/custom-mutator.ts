@@ -2,7 +2,7 @@ import {Blockly} from 'ngx-blockly';
 
 export class CustomMutator extends Blockly.Mutator {
 
-  constructor(block) {
+  constructor(block: any) {
     super(block);
   }
 

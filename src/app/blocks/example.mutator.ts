@@ -3,7 +3,7 @@ import {CustomMutator} from './custom-mutator';
 
 export class ExampleMutator extends BlockMutator {
 
-  constructor(name, blockList = null) {
+  constructor(name: string, blockList: string[] | null = null) {
     super(name, blockList);
   }
 

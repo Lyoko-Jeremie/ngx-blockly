@@ -1,6 +1,6 @@
 import {UUID} from 'angular2-uuid';
 import * as Blockly from 'blockly/core';
-import {ICollapsibleToolboxItem, ToolboxCategory} from 'blockly/blockly';
+import {ICollapsibleToolboxItem, ToolboxCategory} from 'blockly/core';
 import {Node} from '../models/node';
 
 export class NgxBlocklyToolbox extends Blockly.Toolbox {
@@ -11,36 +11,39 @@ export class NgxBlocklyToolbox extends Blockly.Toolbox {
   private readonly _TOOLBAR_CLASS = 'toolbar';
 
   protected _timeout: any;
-  protected _input: HTMLInputElement;
+  protected _input!: HTMLInputElement;
   protected _categoryId = UUID.UUID();
-  protected _categoryExpandedCache: Map<String, boolean> = new Map<String, boolean>();
-  private _nodes: Node[];
+  protected _categoryExpandedCache: Map<string, boolean> = new Map<string, boolean>();
+  private _nodes: Node[] = [];
 
   constructor(workspace: Blockly.WorkspaceSvg) {
     super(workspace);
     workspace.addChangeListener(this._onWorkspaceChange.bind(this));
   }
 
-  public init() {
+  public init(): void {
     super.init();
     this._initSearchbar();
   }
 
-  public render(parsedToolboxDef) {
-    if (parsedToolboxDef.contents.length === 0 || parsedToolboxDef.contents[0].toolboxitemid !== this._categoryId) {
+  public render(parsedToolboxDef: Blockly.utils.toolbox.ToolboxInfo): void {
+    const firstItem = parsedToolboxDef.contents[0] as any;
+    if (parsedToolboxDef.contents.length === 0 || firstItem.toolboxitemid !== this._categoryId) {
       const name = Blockly.Msg[this.SEARCH_CATEGORY] ? Blockly.Msg[this.SEARCH_CATEGORY] : 'Search';
       const xmlDef =
         '<xml>' +
         '<category colour="#ccc" expanded="false" name="' + name + '" hidden="true" toolboxitemid="' + this._categoryId + '"></category>' +
         '</xml>';
       const jsonDef = Blockly.utils.toolbox.convertToolboxDefToJson(xmlDef);
-      parsedToolboxDef.contents = [jsonDef.contents[0]].concat(parsedToolboxDef.contents);
+      if (jsonDef && jsonDef.contents.length > 0) {
+        parsedToolboxDef.contents = [jsonDef.contents[0]].concat(parsedToolboxDef.contents);
+      }
     }
     super.render(parsedToolboxDef);
     this._restoreExpandedState();
   }
 
-  public clearSearch() {
+  public clearSearch(): void {
     this._clearSearchResult();
     if (this._input) {
       this._input.value = '';
@@ -66,23 +69,26 @@ export class NgxBlocklyToolbox extends Blockly.Toolbox {
     this._nodes = nodes;
   }
 
-  private _initSearchbar() {
+  private _initSearchbar(): void {
     this._input = document.createElement('input');
     this._input.placeholder = Blockly.Msg[this.SEARCH_PLACEHOLDER] ? Blockly.Msg[this.SEARCH_PLACEHOLDER] : 'search';
     this._input.className = this._SEARCHBAR_CLASS;
     this._input.size = 1;
     this._input.addEventListener('keyup', this._search.bind(this));
-    const element = this.HtmlDiv.firstChild as HTMLElement;
-    element.classList.add(this._TOOLBAR_CLASS);
-    this.HtmlDiv.insertBefore(this._input, element);
+    const htmlDiv = this.HtmlDiv;
+    if (htmlDiv) {
+      const element = htmlDiv.firstChild as HTMLElement;
+      element.classList.add(this._TOOLBAR_CLASS);
+      htmlDiv.insertBefore(this._input, element);
+    }
   }
 
-  private _search(event) {
+  private _search(event: KeyboardEvent): void {
 
     clearTimeout(this._timeout);
     this._timeout = setTimeout(() => {
 
-      const searchKey = event.target.value.trim();
+      const searchKey = (event.target as HTMLInputElement).value.trim();
       if (searchKey.length > 0) {
 
         const result = this._recursiveSearch(searchKey, this.toolboxDef_);
@@ -100,8 +106,8 @@ export class NgxBlocklyToolbox extends Blockly.Toolbox {
     }, 100);
   }
 
-  private _recursiveSearch(searchKey, child): any[] {
-    let blockDefs = [];
+  private _recursiveSearch(searchKey: string, child: any): any[] {
+    let blockDefs: any[] = [];
     if (child.contents && Array.isArray(child.contents)) {
       if (child.toolboxitemid && child.toolboxitemid === this._categoryId) {
         return blockDefs;
@@ -130,7 +136,7 @@ export class NgxBlocklyToolbox extends Blockly.Toolbox {
     return blockDefs;
   }
 
-  private _clearSearchResult() {
+  private _clearSearchResult(): void {
     const flyout = this.workspace_.getFlyout();
     if (flyout) {
       flyout.hide();
@@ -141,7 +147,7 @@ export class NgxBlocklyToolbox extends Blockly.Toolbox {
     }
   }
 
-  private _storeExpandedState() {
+  private _storeExpandedState(): void {
     this.getToolboxItems().forEach(item => {
       if (item.getId() !== this._categoryId) {
         const collapsibleItem = item as ICollapsibleToolboxItem;
@@ -152,7 +158,7 @@ export class NgxBlocklyToolbox extends Blockly.Toolbox {
     });
   }
 
-  private _restoreExpandedState() {
+  private _restoreExpandedState(): void {
     this._categoryExpandedCache.forEach((expanded: boolean, id: string) => {
       const collapsibleItem = this.getToolboxItemById(id) as ICollapsibleToolboxItem;
       if (collapsibleItem && typeof collapsibleItem.isExpanded === 'function') {
@@ -161,7 +167,7 @@ export class NgxBlocklyToolbox extends Blockly.Toolbox {
     });
   }
 
-  private _onWorkspaceChange(event: any) {
+  private _onWorkspaceChange(event: any): void {
     if (event.type === Blockly.Events.TOOLBOX_ITEM_SELECT) {
       this._storeExpandedState();
     }
@@ -186,17 +192,17 @@ export class NgxBlocklyToolbox extends Blockly.Toolbox {
     return false;
   }
 
-  private _prepareString(str): string {
+  private _prepareString(str: string): string {
     str = this._breakUpCamelCase(str);
     str = str.toLowerCase().trim();
     return this._replaceWhitespaceWithUnderscore(str);
   }
 
-  private _breakUpCamelCase(str): string {
+  private _breakUpCamelCase(str: string): string {
     return str.replace(/([A-Z])/g, ' $1');
   }
 
-  private _replaceWhitespaceWithUnderscore(str): string {
+  private _replaceWhitespaceWithUnderscore(str: string): string {
     return str.replace(/\s+/g, '_');
   }
 }

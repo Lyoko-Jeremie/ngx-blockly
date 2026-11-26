@@ -7,12 +7,11 @@ export class Category implements Node {
   private _nodes: Node [];
   private _colour: string;
   private _name: string;
-  private _custom: string;
-  private _style: string;
-  private _cssClass: string;
+  private _custom?: string;
+  private _style?: string;
+  private _cssClass?: string;
   private _toolboxItemId: string;
-  private _hidden: boolean;
-
+  private _hidden?: boolean;
   constructor(name: string,
               colour: string,
               nodes?: Node [],
@@ -55,27 +54,27 @@ export class Category implements Node {
     this._name = value;
   }
 
-  get custom(): string {
+  get custom(): string | undefined {
     return this._custom;
   }
 
-  set custom(value: string) {
+  set custom(value: string | undefined) {
     this._custom = value;
   }
 
-  get style(): string {
+  get style(): string | undefined {
     return this._style;
   }
 
-  set style(value: string) {
+  set style(value: string | undefined) {
     this._style = value;
   }
 
-  get cssClass(): string {
+  get cssClass(): string | undefined {
     return this._cssClass;
   }
 
-  set cssClass(value: string) {
+  set cssClass(value: string | undefined) {
     this._cssClass = value;
   }
 
@@ -87,11 +86,11 @@ export class Category implements Node {
     this._toolboxItemId = value;
   }
 
-  get hidden(): boolean {
+  get hidden(): boolean | undefined {
     return this._hidden;
   }
 
-  set hidden(value: boolean) {
+  set hidden(value: boolean | undefined) {
     this._hidden = value;
   }
 

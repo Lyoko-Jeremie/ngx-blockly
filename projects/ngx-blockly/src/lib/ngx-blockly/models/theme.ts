@@ -22,8 +22,8 @@ export interface CategoryStyles {
 
 
 export class BlockStyle {
-  colourPrimary: string;
-  colourSecondary: string;
-  colourTertiary: string;
-  hat: string;
+  colourPrimary = '';
+  colourSecondary = '';
+  colourTertiary = '';
+  hat = '';
 }
