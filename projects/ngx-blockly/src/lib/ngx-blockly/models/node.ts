@@ -1,3 +1,3 @@
 export interface Node {
-    toXML(): string;
+  toXML(): string;
 }

@@ -12,15 +12,15 @@ import {
   SimpleChange,
   ViewChild
 } from '@angular/core';
-import { NgxBlocklyConfig, NgxBlocklyGenerator } from './ngx-blockly.config';
-import { CustomBlock } from './models/custom-block';
+import {NgxBlocklyConfig, NgxBlocklyGenerator} from './ngx-blockly.config';
+import {CustomBlock} from './models/custom-block';
 import * as Blockly from 'blockly/core';
-import { NgxBlocklyToolbox } from './plugins/ngx-blockly.toolbox';
-import { dartGenerator } from 'blockly/dart';
-import { luaGenerator } from 'blockly/lua';
-import { javascriptGenerator } from 'blockly/javascript';
-import { phpGenerator } from 'blockly/php';
-import { pythonGenerator } from 'blockly/python';
+import {NgxBlocklyToolbox} from './plugins/ngx-blockly.toolbox';
+import {dartGenerator} from 'blockly/dart';
+import {luaGenerator} from 'blockly/lua';
+import {javascriptGenerator} from 'blockly/javascript';
+import {phpGenerator} from 'blockly/php';
+import {pythonGenerator} from 'blockly/python';
 
 @Component({
   selector: 'ngx-blockly',
@@ -276,7 +276,7 @@ export class NgxBlocklyComponent implements OnInit, AfterViewInit, OnChanges, On
     if (readOnly) {
       this.secondaryContainer.nativeElement.classList.remove('hidden');
       if (!this._secondaryWorkspace) {
-        const config = { ...this.config };
+        const config = {...this.config};
         config.readOnly = true;
         this._secondaryWorkspace = Blockly.inject(this.secondaryContainer.nativeElement, config);
       }

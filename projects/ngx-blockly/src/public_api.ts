@@ -3,7 +3,7 @@
  */
 import * as Blockly from 'blockly/core';
 
-export { Blockly };
+export {Blockly};
 
 // Locales
 import * as EN from 'blockly/msg/en';
