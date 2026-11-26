@@ -1,11 +1,15 @@
-import {async, TestBed} from '@angular/core/testing';
+import {waitForAsync, TestBed} from '@angular/core/testing';
 import {AppComponent} from './app.component';
+import {NgxBlocklyModule} from 'ngx-blockly';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
+      ],
+      imports: [
+        NgxBlocklyModule
       ],
     }).compileComponents();
   }));
@@ -16,16 +20,18 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'NgxBlocklyLibrary'`, () => {
+  it('should expose the blockly configuration', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('NgxBlocklyLibrary');
+    expect(app.config).toBeTruthy();
+    expect(app.config.toolbox).toBeTruthy();
   });
 
-  it('should render title in a h1 tag', () => {
+  it('should render the blockly workspace', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to NgxBlocklyLibrary!');
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('ngx-blockly')).toBeTruthy();
+    expect(el.querySelector('svg')).toBeTruthy();
   });
 });
