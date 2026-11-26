@@ -30,5 +30,10 @@
     "link": "npm run build_lib && cd ../../dist/ngx-blockly && npm link",
     "publish_lib": "cd ../../dist/ngx-blockly && npm publish",
     "publish": "npm run build_lib && npm run publish_lib"
+  },
+  "exports": {
+    ".": {
+      "default": "./src/public_api.ts"
+    }
   }
 }
